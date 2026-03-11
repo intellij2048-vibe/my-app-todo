@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import LogoutButton from '@/components/auth/LogoutButton'
+import { Profile } from '@/types/supabase'
 
 export default async function DashboardLayout({
   children,
@@ -18,18 +19,26 @@ export default async function DashboardLayout({
   }
 
   // 유저 프로필 조회
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .single<Profile>() // single()은 조회 결과가 하나만 있는 경우에 사용
+
+  if (error) {
+    console.error('프로필 조회 에러:', error.message, error.code)
+  }
+
+  if (!profile) {
+    redirect('/login')
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* 상단 네비게이션 */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
-          <h1 className="text-xl font-bold text-indigo-600">MyApp</h1>
+          <h1 className="text-xl font-bold text-indigo-600">MyAppTodo</h1>
           <div className="flex items-center gap-3">
             <span className="text-sm text-gray-600">
               {profile?.full_name ?? user.email}

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: '이메일 인증 안내 | MyApp',
+  title: '이메일 인증 안내 | MyAppTodo',
 }
 
 export default function VerifyEmailPage() {

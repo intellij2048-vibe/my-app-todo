@@ -2,7 +2,7 @@ import { Metadata } from 'next'
 import LoginForm from '@/components/auth/LoginForm'
 
 export const metadata: Metadata = {
-  title: '로그인 | MyApp',
+  title: '로그인 | MyAppTodo',
 }
 
 export default function LoginPage() {

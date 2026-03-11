@@ -5,7 +5,7 @@ import './globals.css'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'MyApp',
+  title: 'MyAppTodo',
   description: 'Next.js + Supabase 이메일 인증 앱',
 }
 

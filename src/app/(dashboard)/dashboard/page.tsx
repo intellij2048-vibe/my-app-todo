@@ -1,5 +1,6 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import { Profile } from '@/types/supabase'
 
 export default async function DashboardPage() {
   const supabase = await createClient()
@@ -9,11 +10,20 @@ export default async function DashboardPage() {
 
   if (!user) redirect('/login')
 
-  const { data: profile } = await supabase
+  const { data: profile, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single()
+    .single<Profile>() // single()은 조회 결과가 하나만 있는 경우에 사용
+
+  if (error) {
+    console.error('프로필 조회 에러:', error.message, error.code)
+  }
+
+  if (!profile) {
+    redirect('/login')
+  }
+
 
   return (
     <div className="space-y-6">
