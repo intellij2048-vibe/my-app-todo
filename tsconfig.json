@@ -1,23 +1,45 @@
 {
-    "compilerOptions": {
-      "moduleResolution": "node", // node로 설정되어 있는지 확인
-      // ... 기타 설정
-      "baseUrl": ".", 
-      "paths": {
-        "@/*": ["./src/*"] 
-      },
-      "allowImportingTsExtensions": false, // true일 경우 오히려 확장자를 강제하므로 false여야 함
-      "resolveJsonModule": true,
-      "isolatedModules": true,
-      "noEmit": true,
-      "jsx": "preserve"
+  "compilerOptions": {
+    "moduleResolution": "node", // node로 설정되어 있는지 확인
+    // ... 기타 설정
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
     },
-    "include": [
-      "next-env.d.ts",
-      "**/*.ts",
-      "**/*.tsx",
-      ".next/types/**/*.ts" // 필수
+    "allowImportingTsExtensions": false, // true일 경우 오히려 확장자를 강제하므로 false여야 함
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "target": "ES2017",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
     ],
-    "exclude": ["node_modules"]
-  }
-  
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "incremental": true,
+    "module": "esnext",
+    "esModuleInterop": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts" // 필수
+    ,
+    ".next/dev/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
