@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "moduleResolution": "node", // node로 설정되어 있는지 확인
+    "moduleResolution": "bundler", // Tailwind v3.4+ 및 최신 Next.js 환경의 타입 추론 지원
     // ... 기타 설정
     "baseUrl": ".",
     "paths": {
