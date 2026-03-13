@@ -5,7 +5,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "./src/*"
+        "./app/*"
       ]
     },
     "allowImportingTsExtensions": false, // true일 경우 오히려 확장자를 강제하므로 false여야 함

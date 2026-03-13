@@ -19,11 +19,20 @@ alter table public.profiles enable row level security;
 
 -- 3. RLS 정책 설정
 -- 본인 프로필만 조회 가능
+drop policy if exists "본인 프로필 조회" on public.profiles;
 create policy "본인 프로필 조회"
   on public.profiles for select
   using (auth.uid() = id);
 
+-- 프로필 생성 허용 정책 (INSERT)
+drop policy if exists "프로필 자동 생성" on public.profiles;
+create policy "프로필 자동 생성"
+  on public.profiles
+  for insert
+  with check (auth.uid() = id);
+
 -- 본인 프로필만 수정 가능
+drop policy if exists "본인 프로필 수정" on public.profiles;
 create policy "본인 프로필 수정"
   on public.profiles for update
   using (auth.uid() = id);
@@ -42,20 +51,24 @@ create trigger on_profiles_updated
   for each row execute procedure public.handle_updated_at();
 
 -- 5. 신규 유저 가입 시 profiles 자동 생성 함수
-create or replace function public.handle_new_user()
-returns trigger as $$
-begin
-  insert into public.profiles (id, email, full_name, username, avatar_url)
-  values (
-    new.id,
-    new.email,
-    new.raw_user_meta_data ->> 'full_name',
-    new.raw_user_meta_data ->> 'username',
-    new.raw_user_meta_data ->> 'avatar_url'
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS trigger AS $$
+BEGIN
+
+  RAISE NOTICE 'username value: %', NEW.raw_user_meta_data ->> 'username';
+
+  INSERT INTO public.profiles (id, email, full_name, username, avatar_url)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    NEW.raw_user_meta_data ->> 'full_name',
+    NEW.raw_user_meta_data ->> 'username',
+    NEW.raw_user_meta_data ->> 'avatar_url'
   );
-  return new;
-end;
-$$ language plpgsql security definer;
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
 
 -- 6. auth.users INSERT 시 트리거 실행
 create trigger on_auth_user_created

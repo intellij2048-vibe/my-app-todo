@@ -1,8 +1,8 @@
 import { Metadata } from 'next'
-import SignupForm from'@/components/auth/SignupForm'
+import SignupForm from '@/components/auth/SignupForm'
 
 export const metadata: Metadata = {
-  title: '회원가입 | MyApp',
+  title: '회원가입 | MyAppTodo',
 }
 
 export default function SignupPage() {
