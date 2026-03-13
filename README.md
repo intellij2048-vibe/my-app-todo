@@ -57,7 +57,9 @@ my-app-todo/
 │   ├── (auth)/               ← 로그인/회원가입 페이지 그룹
 │   │   ├── login/page.tsx
 │   │   ├── signup/page.tsx
+│   │   ├── verify-email/page.tsx
 │   │   └── layout.tsx
+│   │   └── page.tsx
 │   ├── (dashboard)/          ← 보호된 페이지 그룹
 │   │   ├── dashboard/page.tsx
 │   │   └── layout.tsx
@@ -67,12 +69,37 @@ my-app-todo/
 │   └── page.tsx
 ├── components/
 │   ├── auth/                 ← 인증 관련 컴포넌트
+│   │   └── LoginForm.tsx
+│   │   └── LogoutButton.tsx
+│   │   └── SignupForm.tsx
 │   └── ui/                   ← 공통 UI 컴포넌트
+│   │   └── Button.tsx
+│   │   └── Input.tsx
+│   │   └── Label.tsx
+│   │   └── Card.tsx
+│   │   └── CardContent.tsx
+│   │   └── CardDescription.tsx
+│   │   └── CardFooter.tsx
+│   │   └── CardHeader.tsx
+│   │   └── CardTitle.tsx
+│   │   └── Form.tsx
+│   │   └── FormControl.tsx
+│   │   └── FormDescription.tsx
+│   │   └── FormField.tsx
+│   │   └── FormItem.tsx
+│   │   └── FormLabel.tsx
+│   │   └── FormMessage.tsx
 ├── lib/
 │   └── supabase/             ← Supabase 클라이언트 설정
+│       ├── client.ts
+│       ├── server.ts
+│       └── middleware.ts
 ├── types/
 │   └── supabase.ts           ← DB 타입 정의
-├── middleware.ts              ← 라우트 보호
+│   └── global.css
+│   └── layout.tsx
+│  └── page.tsx
+├── proxy.ts                  ← 라우트 보호
 └── supabase_schema.sql       ← DB 스키마
 ```
 
@@ -95,8 +122,8 @@ my-app-todo/
   → 쿠키에 세션 저장
   → /dashboard 리다이렉트
   
-미인증 상태에서 /dashboard 접근
-  → middleware가 감지 → /login 리다이렉트
+미인증 상태에서 `/dashboard` 접근
+  → `proxy`가 감지 → `/login` 리다이렉트
 
 로그아웃
   → signOut()
@@ -115,4 +142,27 @@ npx supabase login
 npx supabase gen types typescript \
   --project-id your-project-id > types/supabase.ts
 ```
+
+---
+
+## 배포 (Vercel)
+
+Next.js 프로젝트를 배포하기 위한 가장 권장되는 방법은 Vercel을 사용하는 것입니다.
+
+### 1. Vercel 프로젝트 생성 및 환경변수
+Vercel 대시보드에서 `my-app-todo` 리포지토리를 가져온 후, 환경 변수(Environment Variables)를 설정해야 합니다:
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase 프로젝트 URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`: Supabase Anon 키
+
+### 2. 빌드 커맨드 설정
+일반적으로 Vercel이 Next.js 앱을 자동으로 감지하므로 기본 설정(Build Command: `npm run build`, Output Directory: `Next.js default`)을 그대로 사용합니다.
+
+### 3. Supabase URL Configuration 업데이트 (중요)
+배포된 후에는 Supabase에서 인증 성공 후 돌아갈 주소를 프로덕션 도메인으로 알려주어야 합니다.
+**Supabase 대시보드 → Authentication → URL Configuration:**
+- **Site URL**: `https://당신의-배포된-vercel-주소.vercel.app`
+- **Redirect URLs**: `https://당신의-배포된-vercel-주소.vercel.app/auth/callback` 추가
+
+이렇게 하면 배포된 환경에서도 로그인, 회원가입 시 정상적으로 콜백 및 리다이렉트가 동작합니다.
+
 # my-app-todo
