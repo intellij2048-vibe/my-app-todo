@@ -12,6 +12,8 @@ export const metadata: Metadata = {
   description: 'Next.js + Supabase 이메일 인증 앱',
 }
 
+import { Toaster } from "@/components/ui/sonner"
+
 export default function RootLayout({
   children,
 }: {
@@ -19,7 +21,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ko" className={cn("font-sans", geist.variable)}>
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        {children}
+        <Toaster position="bottom-center" richColors />
+      </body>
     </html>
   )
 }

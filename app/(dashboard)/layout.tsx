@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import LogoutButton from '@/components/auth/LogoutButton'
 import { Profile } from '@/types/supabase'
+import { BarChart } from 'lucide-react'
 
 export default async function DashboardLayout({
   children,
@@ -41,6 +42,13 @@ export default async function DashboardLayout({
         <div className="max-w-5xl mx-auto px-4 h-16 flex items-center justify-between">
           <h1 className="text-xl font-bold text-indigo-600">MyAppTodo</h1>
           <div className="flex items-center gap-2">
+            <Link
+              href="/ui-samples"
+              className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition"
+            >
+              <BarChart width="14" height="14" className="w-3.5 h-3.5" />
+              UI 쇼룸
+            </Link>
             <Link
               href="/profile"
               className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition"

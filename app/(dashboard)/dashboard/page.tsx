@@ -14,7 +14,7 @@ export default async function DashboardPage() {
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single<Profile>() // single()은 조회 결과가 하나만 있는 경우에 사용
+    .single<Profile>()
 
   if (error) {
     console.error('프로필 조회 에러:', error.message, error.code)
@@ -23,7 +23,6 @@ export default async function DashboardPage() {
   if (!profile) {
     redirect('/login')
   }
-
 
   return (
     <div className="space-y-6">
@@ -34,17 +33,17 @@ export default async function DashboardPage() {
         <p className="text-gray-500 mt-1">대시보드에 오신 것을 환영합니다.</p>
       </div>
 
-      {/* 프로필 카드 */}
+      {/* 프로필 카드 (이전의 깔끔한 디자인으로 복구) */}
       <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 space-y-4">
         <h3 className="font-semibold text-gray-900">내 계정 정보</h3>
-        <dl className="grid grid-cols-2 gap-4 text-sm">
+        <dl className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
           <div className="flex gap-2">
             <dt className="text-gray-400">이름</dt>
             <dd className="font-medium text-gray-800">{profile?.full_name ?? '-'}</dd>
           </div>
           <div className="flex gap-2">
             <dt className="text-gray-400">사용자 이름</dt>
-            <dd className="font-medium text-gray-800">{profile?.username ?? '-'}</dd>
+            <dd className="font-medium text-gray-800">@{profile?.username ?? '-'}</dd>
           </div>
           <div className="flex gap-2">
             <dt className="text-gray-400">이메일</dt>
@@ -73,4 +72,3 @@ export default async function DashboardPage() {
     </div>
   )
 }
-
