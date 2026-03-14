@@ -5,8 +5,9 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { SignUpMetadata } from '@/types/supabase'
-import Button from '@/components/ui/Button'
-import Input from '@/components/ui/Input'
+import { Button } from '@/components/ui/Button'
+import { Input } from '@/components/ui/Input'
+import { Label } from '@/components/ui/label'
 
 export default function SignupForm() {
   const router = useRouter()
@@ -100,56 +101,66 @@ export default function SignupForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <Input
-        id="full_name"
-        name="full_name"
-        type="text"
-        label="이름"
-        placeholder="홍길동"
-        value={form.full_name}
-        onChange={handleChange}
-        required
-      />
-      <Input
-        id="username"
-        name="username"
-        type="text"
-        label="사용자 이름"
-        placeholder="gildong (3자 이상)"
-        value={form.username}
-        onChange={handleChange}
-        required
-      />
-      <Input
-        id="email"
-        name="email"
-        type="email"
-        label="이메일"
-        placeholder="you@example.com"
-        value={form.email}
-        onChange={handleChange}
-        required
-      />
-      <Input
-        id="password"
-        name="password"
-        type="password"
-        label="비밀번호"
-        placeholder="8자 이상"
-        value={form.password}
-        onChange={handleChange}
-        required
-      />
-      <Input
-        id="confirmPassword"
-        name="confirmPassword"
-        type="password"
-        label="비밀번호 확인"
-        placeholder="비밀번호 재입력"
-        value={form.confirmPassword}
-        onChange={handleChange}
-        required
-      />
+      <div className="space-y-2">
+        <Label htmlFor="full_name">이름</Label>
+        <Input
+          id="full_name"
+          name="full_name"
+          type="text"
+          placeholder="홍길동"
+          value={form.full_name}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="username">사용자 이름</Label>
+        <Input
+          id="username"
+          name="username"
+          type="text"
+          placeholder="gildong (3자 이상)"
+          value={form.username}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="email">이메일</Label>
+        <Input
+          id="email"
+          name="email"
+          type="email"
+          placeholder="you@example.com"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="password">비밀번호</Label>
+        <Input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="8자 이상"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+      </div>
+      <div className="space-y-2">
+        <Label htmlFor="confirmPassword">비밀번호 확인</Label>
+        <Input
+          id="confirmPassword"
+          name="confirmPassword"
+          type="password"
+          placeholder="비밀번호 재입력"
+          value={form.confirmPassword}
+          onChange={handleChange}
+          required
+        />
+      </div>
 
       {error && (
         <p className="text-sm text-red-500 bg-red-50 px-3 py-2 rounded-lg">
@@ -157,8 +168,8 @@ export default function SignupForm() {
         </p>
       )}
 
-      <Button type="submit" className="w-full" size="lg" isLoading={isLoading}>
-        회원가입
+      <Button type="submit" className="w-full" size="lg" disabled={isLoading}>
+        {isLoading ? '가입 중...' : '회원가입'}
       </Button>
 
       <p className="text-center text-sm text-gray-500">

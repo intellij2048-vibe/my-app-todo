@@ -62,16 +62,21 @@ my-app-todo/
 │   │   └── page.tsx
 │   ├── (dashboard)/          ← 보호된 페이지 그룹
 │   │   ├── dashboard/page.tsx
+│   │   ├── profile/page.tsx  ← 프로필 수정 페이지 (신규)
 │   │   └── layout.tsx
 │   ├── auth/callback/        ← 이메일 인증 콜백
 │   │   └── route.ts
 │   ├── layout.tsx
 │   └── page.tsx
+├── actions/
+│   └── profile.ts            ← 프로필 수정 Server Action (신규)
 ├── components/
 │   ├── auth/                 ← 인증 관련 컴포넌트
 │   │   └── LoginForm.tsx
 │   │   └── LogoutButton.tsx
 │   │   └── SignupForm.tsx
+│   ├── profile/              ← 프로필 관련 컴포넌트 (신규)
+│   │   └── ProfileEditForm.tsx
 │   └── ui/                   ← 공통 UI 컴포넌트
 │   │   └── Button.tsx
 │   │   └── Input.tsx
@@ -132,6 +137,35 @@ my-app-todo/
 
 ---
 
+## 프로필 수정 기능
+
+### 기능
+- 이름(`full_name`), 사용자 이름(`username`) 변경
+- 이메일은 읽기 전용 (변경 불가)
+- username 중복 시 에러 안내
+- username은 영문, 숫자, `_` 만 허용
+
+### 접근 방법
+- 대시보드 헤더 우측 **👤 이름 클릭** → `/profile`
+- 또는 직접 URL: `/profile`
+
+### 흐름
+```
+헤더 이름 클릭
+  → /profile 페이지
+  → 이름 / 사용자 이름 수정 후 [변경사항 저장]
+  → Server Action (유효성 검사 → Supabase UPDATE)
+  → 성공/실패 메시지 표시
+  → /dashboard, /profile 캐시 갱신
+```
+
+### Supabase 설정 (기존 schema에 포함)
+- RLS UPDATE 정책: 본인 프로필만 수정 가능
+- `updated_at` 자동 갱신 트리거
+- `username` UNIQUE 제약 조건
+
+---
+
 ## 타입 자동 생성 (권장)
 
 스키마 확정 후 CLI로 타입을 자동 생성하세요:
@@ -164,5 +198,33 @@ Vercel 대시보드에서 `my-app-todo` 리포지토리를 가져온 후, 환경
 - **Redirect URLs**: `https://당신의-배포된-vercel-주소.vercel.app/auth/callback` 추가
 
 이렇게 하면 배포된 환경에서도 로그인, 회원가입 시 정상적으로 콜백 및 리다이렉트가 동작합니다.
+
+---
+
+## Todo 앱 설계 (Roadmap)
+
+### 핵심 기능
+- **할 일 관리 (CRUD)**: 할 일 생성, 조회, 수정, 삭제
+- **상태 관리**: 완료/미완료 토글
+- **우선순위**: 낮음, 보통, 높음 설정
+- **기한 설정**: 마감일 지정 기능
+- **필터링**: 전체, 진행 중, 완료된 항목 필터링
+
+### 데이터베이스 설계 (todos 테이블)
+| 컬럼명 | 타입 | 설명 |
+|--------|------|------|
+| `id` | `uuid` | 기본키 |
+| `user_id` | `uuid` | 작성자 (profiles.id 참조) |
+| `title` | `text` | 할 일 제목 |
+| `description` | `text` | 상세 설명 (옵션) |
+| `is_completed` | `boolean` | 완료 여부 (기본: false) |
+| `priority` | `text` | 우선순위 (low, medium, high) |
+| `due_date` | `timestamptz` | 마감 기한 (옵션) |
+| `created_at` | `timestamptz` | 생성일 |
+
+### 보안 정책 (RLS)
+- **SELECT/INSERT/UPDATE/DELETE**: 오직 본인의 할 일만 접근 가능 (`auth.uid() = user_id`)
+
+---
 
 # my-app-todo

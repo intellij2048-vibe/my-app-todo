@@ -3,7 +3,7 @@
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import Button from '@/components/ui/Button'
+import { Button } from '@/components/ui/Button'
 
 export default function LogoutButton() {
   const router = useRouter()
@@ -21,10 +21,10 @@ export default function LogoutButton() {
     <Button
       variant="outline"
       size="sm"
-      isLoading={isLoading}
+      disabled={isLoading}
       onClick={handleLogout}
     >
-      로그아웃
+      {isLoading ? '로그아웃 중...' : '로그아웃'}
     </Button>
   )
 }
