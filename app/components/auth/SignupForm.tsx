@@ -8,6 +8,7 @@ import { SignUpMetadata } from '@/types/supabase'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 
 export default function SignupForm() {
   const router = useRouter()
@@ -178,6 +179,7 @@ export default function SignupForm() {
           로그인
         </Link>
       </p>
+      <LoadingOverlay isVisible={isLoading} message="가입 처리 중..." />
     </form>
   )
 }

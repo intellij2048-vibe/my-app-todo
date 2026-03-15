@@ -7,6 +7,7 @@ import { createClient } from '@/lib/supabase/client'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 
 export default function LoginForm() {
   const router = useRouter()
@@ -94,6 +95,7 @@ export default function LoginForm() {
           회원가입
         </Link>
       </p>
+      <LoadingOverlay isVisible={isLoading} message="로그인 중..." />
     </form>
   )
 }

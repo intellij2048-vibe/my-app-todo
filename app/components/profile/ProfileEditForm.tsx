@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 import { toast } from 'sonner'
+import { LoadingOverlay } from '@/components/ui/loading-overlay'
 
 const initialState: ProfileUpdateState = {
   success: false,
@@ -91,6 +92,7 @@ export default function ProfileEditForm({ profile }: { profile: Profile }) {
           {isPending ? '정보 동기화 중...' : '프로필 정보 업데이트'}
         </Button>
       </div>
+      <LoadingOverlay isVisible={isPending} message="정보 동기화 중..." />
     </form>
   )
 }
